@@ -43,7 +43,7 @@ int my_cd(info_t *info)
 	current_dir = getcwd(buffer, 1024);
 	if (!current_dir)
 		e_puts("TODO: >>getcwd failure emsg here<<\n");
-		if (!info->argv[1])
+	if (!info->argv[1])
 	{
 	new_dir = _getenv(info, "HOME=");
 	if (!new_dir)
@@ -51,7 +51,7 @@ int my_cd(info_t *info)
 	else
 		chdir_ret = chdir(new_dir);
 	}
-		else if (_strcmp(info->argv[1], "-") == 0)
+	else if (_strcmp(info->argv[1], "-") == 0)
 	{
 	if (!_getenv(info, "OLDPWD="))
 	{
@@ -63,19 +63,19 @@ int my_cd(info_t *info)
 	chdir((new_dir = _getenv(info, "OLDPWD=")) ? new_dir : "/");
 	}
 		else
-        chdir_ret = chdir(info->argv[1]);
-    if (chdir_ret == -1)
-    {
-        print_error(info, "can't cd to ");
-        e_puts(info->argv[1]);
-        e_putchar('\n');
-    }
-    else
-    {
-        _setenv(info, "OLDPWD", _getenv(info, "PWD="));
-        _setenv(info, "PWD", getcwd(buffer, 1024));
-    }
-    return (0);
+	chdir_ret = chdir(info->argv[1]);
+	if (chdir_ret == -1)
+	{
+		print_error(info, "can't cd to ");
+		e_puts(info->argv[1]);
+		e_putchar('\n');
+	}
+	else
+	{
+		_setenv(info, "OLDPWD", _getenv(info, "PWD="));
+		_setenv(info, "PWD", getcwd(buffer, 1024));
+	}
+	return (0);
 }
 
 /**
@@ -86,11 +86,11 @@ int my_cd(info_t *info)
  */
 int my_help(info_t *info)
 {
-    char **arg_array;
+	char **arg_array;
 
-    arg_array = info->argv;
-    e_puts("help call works. Function not yet implemented \n");
-    if (0)
-        e_puts(*arg_array); /* temp att_unused workaround */
-    return (0);
+	arg_array = info->argv;
+	e_puts("help call works. Function not yet implemented \n");
+	if (0)
+		e_puts(*arg_array);
+	return (0);
 }
