@@ -137,6 +137,10 @@ char *_strdup(const char *input_str);
 void _puts(char *string_to_print);
 int _putchar(char character);
 
+/* builtin2.c */
+int _myhistory(info_t *);
+int _myalias(info_t *);
+
 /* exiting.c */
 char *_custom_strncpy(char *, char *, int);
 char *_custom_strncat(char *, char *, int);
