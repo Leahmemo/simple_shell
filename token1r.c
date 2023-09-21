@@ -17,21 +17,22 @@ char **str_to_words(char *input_str, char *d)
 	if (!d)
 		d = " ";
 	for (i = 0; input_str[i] != '\0'; i++)
-		if (!is_delim(str[i], d) &&
+		if (!is_delim(input_str[i], d) &&
 (is_delim(input_str[i + 1], d) || !input_str[i + 1]))
 			numwords++;
 
 	if (numwords == 0)
 		return (NULL);
+	char **s;
 	s = malloc((1 + numwords) * sizeof(char *));
 	if (!s)
 		return (NULL);
 	for (i = 0, j = 0; j < numwords; j++)
 	{
-		while (is_delim(str[i], d))
+		while (is_delim(input_str[i], d))
 			i++;
 		k = 0;
-		while (!is_delim(str[i + k], d) && input_str[i + k])
+		while (!is_delim(input_str[i + k], d) && input_str[i + k])
 			k++;
 		s[j] = malloc((k + 1) * sizeof(char));
 		if (!words_array[j])

@@ -100,7 +100,7 @@ k++;
 if (!k)
 return;
 
-path = find_path(info, getenv(info, "PATH="), info->argv[0]);
+char *path = my_getenv("PATH");
 if (path)
 {
 info->path = path;
@@ -108,7 +108,7 @@ fork_executable_command(info);
 }
 else
 {
-if ((interactive(info) || getenv(info, "PATH=")
+if ((interactive(info) || my_getenv(info, "PATH=")
 || info->argv[0][0] == '/') && is_command(info, info->argv[0]))
 fork_executable_command(info);
 else if (*(info->arg) != '\n')
@@ -132,20 +132,19 @@ pid_t child_pid;
 child_pid = fork();
 if (child_pid == -1)
 {
-/* TODO: PUT ERROR FUNCTION */
-perror("Error:");
-return;
+	perror("Error:");
+	return;
 }
 if (child_pid == 0)
 {
-if (execve(info->path, info->argv, get_environ(info)) == -1)
+if (execve(info->path, info->argv, my_getenv(info)) == -1)
 {
 free_info(info, 1);
 if (errno == EACCES)
 exit(126);
 exit(1);
 }
-/* TODO: PUT ERROR FUNCTION */
+
 }
 else
 {

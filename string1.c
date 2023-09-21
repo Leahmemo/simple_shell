@@ -48,12 +48,15 @@ return (*str1 < *str2 ? -1 : 1);
 *
 * Return: address of the next character of haystack or NULL
 */
-char *starts_with(const char *haystack, const char *needle)
+list_t *starts_with(list_t *haystack, const char *needle)
 {
-while (*needle)
-if (*needle++ != *haystack++)
-return (NULL);
-return ((char *)haystack);
+	while (*needle)
+	{
+		if (*needle++ != *haystack->str)
+		return (NULL);
+		haystack++;
+	}
+	return (haystack);
 }
 
 /**

@@ -128,7 +128,7 @@ int new_putsfd(char *str, int fd);
 /* string1.c */
 int _strlen(char *str);
 int _strcmp(char *str1, char *str2);
-char *starts_with(const char *haystack, const char *needle);
+list_t *starts_with(list_t *haystack, const char *needle);
 char *_strcat(char *dest, char *src);
 
 /* string2.c */
@@ -151,6 +151,7 @@ char *_custom_strchr(char *, char);
 /* token1r.c */
 char **str_to_words(char *, char *);
 char **str_to_words2(char *, char);
+int is_delim(char c, const char *delimiters);
 
 /* realloc.c */
 char *custom_memset(char *, char, unsigned int);
