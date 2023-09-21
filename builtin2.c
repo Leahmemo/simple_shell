@@ -9,7 +9,7 @@
  */
 int custom_history(info_t *info)
 {
-	print_custom_list(info->custom_history);
+	print_custom_alias(info->custom_history);
 	return (0);
 }
 
@@ -25,7 +25,7 @@ int remove_alias(info_t *info, char *str)
 	char *p, c;
 	int ret;
 
-	p = _strchr(str, '=');
+	p = strchr(str, '=');
 	if (!p)
 		return (1);
 	c = *p;
@@ -108,7 +108,7 @@ int _custom_alias(info_t *info)
 		if (p)
 			set_custom_alias(info, info->argv[i]);
 		else
-			print_custom_alias(node_starts_with(info->custom_alias, info->argv[i], '='));
+			print_custom_alias(starts_with(info->custom_alias, info->argv[i], '='));
 	}
 
 	return (0);

@@ -50,7 +50,7 @@ int custom_atoi(char *input_string)
 	int i, sign = 1, flag = 0, output;
 	unsigned int result = 0;
 
-	for (i = 0; input_strings[i] != '\0' && flag != 2; i++)
+	for (i = 0; input_string[i] != '\0' && flag != 2; i++)
 	{
 		if (input_string[i] == '-')
 			sign *= -1;

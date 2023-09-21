@@ -28,7 +28,7 @@ int main(int argc, char **argv)
 			{
 				_puts(argv[0]);
 				_puts(": 0: Can't open ");
-				_eputs(argv[1]);
+				_puts(argv[1]);
 				_putchar('\n');
 				_putchar(BUF_FLUSH);
 				exit(127);

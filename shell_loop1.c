@@ -58,7 +58,7 @@ int i, builtin_result = -1;
 builtin_table builtintbl[] = {
 {"exit", my_exit},
 {"env", myenv},
-{"help", myhelp},
+{"help", my_help},
 {"history", _myhistory},
 {"setenv", mysetenv},
 {"unsetenv", myunsetenv},
@@ -108,7 +108,7 @@ fork_executable_command(info);
 }
 else
 {
-if ((interactive(info) || _getenv(info, "PATH=")
+if ((interactive(info) || getenv(info, "PATH=")
 || info->argv[0][0] == '/') && is_command(info, info->argv[0]))
 fork_executable_command(info);
 else if (*(info->arg) != '\n')
