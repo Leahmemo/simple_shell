@@ -13,13 +13,13 @@ int myenv(info_t *info)
 }
 
 /**
- * getenv - gets the value of an environ variable
+ * my_getenv - gets the value of an environ variable
  * @info: Structure containing potential arguments. Used to maintain
  * @name: env var name
  *
  * Return: the value
  */
-char *getenv(info_t *info, const char *name)
+char *my_getenv(info_t *info, const char *name)
 {
 	list_t *node = info->env;
 	char *p;

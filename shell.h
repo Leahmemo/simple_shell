@@ -190,7 +190,7 @@ void custom_set_info(info_t *, char **);
 void custom_free_info(info_t *, int);
 
 /* environ.c */
-char *getenv(info_t *, const char *);
+char *my_getenv(info_t *, const char *);
 int myenv(info_t *);
 int mysetenv(info_t *);
 int myunsetenv(info_t *);
