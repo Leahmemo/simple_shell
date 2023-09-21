@@ -37,9 +37,9 @@ int _customerratoi(char *s)
  */
 void print_customError(info_t *info, char *errorstring)
 {
-	_customPuts(info->fname);
-	_customePuts(": ");
-	print_customDecimal(info->line_count, STDERR_FILENO);
+	_customPuts(info->filename);
+	_customerratoi(": ");
+	print_customDecimal(info->line_cnt, STDERR_FILENO);
 	_customPuts(": ");
 	_customputs(info->argv[0]);
 	_customputs(": ");
@@ -55,7 +55,7 @@ void print_customError(info_t *info, char *errorstring)
  */
 int print_customDecimal(int input, int fd)
 {
-	int (*custompchar)(char) = _custompchar;
+	int (*custompchar)(char) = custompchar;
 	int i, count = 0;
 	unsigned int _absolute, current;
 
@@ -63,12 +63,12 @@ int print_customDecimal(int input, int fd)
 		custompchar = _custompchar;
 	if (input < 0)
 	{
-		absolute_ = -input;
+		_absolute = -input;
 		custompchar('-');
 		count++;
 	}
 	else
-		absolute = input;
+		_absolute = input;
 	current = absolute;
 	for (i = 1000000000; i > 1; i /= 10)
 	{
