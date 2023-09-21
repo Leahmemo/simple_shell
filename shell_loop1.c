@@ -14,11 +14,11 @@ int builtin_result = 0;
 
 while (input_result != -1 && builtin_result != -2)
 {
-clear_info(info);
+clearenv(info);
 if (interactive(info))
 _puts("$ ");
-_eputchar(BUF_FLUSH);
-input_result = get_input(info);
+_putchar(BUF_FLUSH);
+input_result = get_the_input(info);
 if (input_result != -1)
 {
 set_info(info, argv);
@@ -36,9 +36,9 @@ if (!interactive(info) && info->status)
 exit(info->status);
 if (builtin_result == -2)
 {
-if (info->error_num == -1)
+if (info->err_nm == -1)
 exit(info->status);
-exit(info->error_num);
+exit(info->err_nm);
 }
 return (builtin_result);
 }
@@ -56,21 +56,21 @@ int find_builtin_command(info_t *info)
 {
 int i, builtin_result = -1;
 builtin_table builtintbl[] = {
-{"exit", _myexit},
-{"env", _myenv},
-{"help", _myhelp},
+{"exit", my_exit},
+{"env", myenv},
+{"help", myhelp},
 {"history", _myhistory},
-{"setenv", _mysetenv},
-{"unsetenv", _myunsetenv},
+{"setenv", mysetenv},
+{"unsetenv", myunsetenv},
 {"cd", _mycd},
 {"alias", _myalias},
 {NULL, NULL}
 };
 
-for (i = 0; builtintbl[i].type; i++)
-if (_strcmp(info->argv[0], builtintbl[i].type) == 0)
+for (i = 0; builtintbl[i].typ; i++)
+if (_strcmp(info->argv[0], builtintbl[i].typ) == 0)
 {
-info->line_count++;
+info->line_cnt++;
 builtin_result = builtintbl[i].func(info);
 break;
 }
@@ -89,10 +89,10 @@ char *path = NULL;
 int i, k;
 
 info->path = info->argv[0];
-if (info->linecount_flag == 1)
+if (info->linecnt_flg == 1)
 {
-info->line_count++;
-info->linecount_flag = 0;
+info->line_cnt++;
+info->linecnt_flg = 0;
 }
 for (i = 0, k = 0; info->arg[i]; i++)
 if (!is_delim(info->arg[i], " \t\n"))
@@ -100,7 +100,7 @@ k++;
 if (!k)
 return;
 
-path = find_path(info, _getenv(info, "PATH="), info->argv[0]);
+path = find_path(info, getenv(info, "PATH="), info->argv[0]);
 if (path)
 {
 info->path = path;

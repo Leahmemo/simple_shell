@@ -31,7 +31,7 @@ int remove_alias(info_t *info, char *str)
 	c = *p;
 	*p = 0;
 	ret = delete_custom_node_at_index(&(info->custom_alias),
-		get_node_index(info->custom_alias, node_starts_with(info->custom_alias, str, -1)));
+		get_node_index(info->custom_alias, starts_with(info->custom_alias, str, -1)));
 	*p = c;
 	return (ret);
 }
@@ -54,7 +54,7 @@ int set_custom_alias(info_t *info, char *str)
 		return (remove_alias(info, str));
 
 	remove_alias(info, str);
-	return (add_node_end(&(info->custom_alias), str, 0) == NULL);
+	return (custom_add_node_end(&(info->custom_alias), str, 0) == NULL);
 }
 
 /**
@@ -98,7 +98,7 @@ int _custom_alias(info_t *info)
 		while (node)
 		{
 			print_custom_alias(node);
-			node = node->next;
+			node = node->nxt;
 		}
 		return (0);
 	}

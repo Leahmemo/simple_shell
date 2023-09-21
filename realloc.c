@@ -1,3 +1,4 @@
+#include <stdlib.h>
 #include 'shell.h'
 /**
  * custom_memset - fills memory with a custom constant byte

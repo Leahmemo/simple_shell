@@ -11,18 +11,18 @@ char *custom_get_history_file(info_t *info)
 {
 	char *dir, *history_file;
 
-	dir = _custom_getenv(info, "HOME=");
+	dir = custom_setenv(info, "HOME=");
 	if (!dir)
 		return (NULL);
 
-	history_file = malloc(sizeof(char) * (_custom_strlen(dir) + _custom_strlen(CUSTOM_HIST_FILE) + 2));
+	history_file = malloc(sizeof(char) * (_custom_strchr(dir) + _custom_strchr(CUSTOM_HIST_FILE) + 2));
 	if (!history_file)
 		return (NULL);
 
 	history_file[0] = 0;
-	_custom_strcpy(history_file, dir);
-	_custom_strcat(history_file, "/");
-	_custom_strcat(history_file, CUSTOM_HIST_FILE);
+	_custom_strncpy(history_file, dir);
+	_custom_strncat(history_file, "/");
+	_custom_strncat(history_file, CUSTOM_HIST_FILE);
 
 	return (history_file);
 }
@@ -48,13 +48,13 @@ int custom_write_history(info_t *info)
 	if (fd == -1)
 		return (-1);
 
-	for (node = info->custom_history; node; node = node->next)
+	for (node = info->custom_history; node; node = node->nxt)
 	{
 		_custom_putsfd(node->str, fd);
-		_custom_putfd('\n', fd);
+		custom_atoi('\n', fd);
 	}
 
-	_custom_putfd(CUSTOM_BUF_FLUSH, fd);
+	custom_atoi(CUSTOM_BUF_FLUSH, fd);
 	close(fd);
 
 	return (1);
@@ -161,7 +161,7 @@ int custom_renumber_history(info_t *info)
 	while (node)
 	{
 		node->num = i++;
-		node = node->next;
+		node = node->nxt;
 	}
 
 	return (info->custom_histcount = i);

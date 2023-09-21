@@ -49,7 +49,7 @@ void check_custom_chain(info_t *info, char *buf, size_t *p, size_t i, size_t len
 {
 	size_t j = *p;
 
-	if (info->cmd_buf_type == CMD_ALT)
+	if (info->cmd_buf_type == CMD_AND)
 	{
 		if (info->status)
 		{
@@ -83,11 +83,11 @@ int replace_custom_alias(info_t *info)
 
 	for (i = 0; i < 10; i++)
 	{
-		node = node_starts_with(info->alias, info->argv[0], '=');
+		node = starts_with(info->alias, info->argv[0], '=');
 		if (!node)
 			return (0);
 		free(info->argv[0]);
-		p = _strchr(node->str, '=');
+		p = strchr(node->str, '=');
 		if (!p)
 			return (0);
 		p = _strdup(p + 1);
@@ -116,8 +116,8 @@ int replace_custom_vars(info_t *info)
 
 		if (!_strcmp(info->argv[i], "$?"))
 		{
-			replace_string(&(info->argv[i]),
-					_strdup(convert_number(info->status, 10, 0)));
+			replace_custom_string(&(info->argv[i]),
+					_strdup(convert_customNumber(info->status, 10, 0)));
 			continue;
 		}
 		if (!_strcmp(info->argv[i], "$$"))

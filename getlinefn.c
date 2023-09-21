@@ -17,7 +17,7 @@ ssize_t input_buff(info_t *info, char **buff, size_t *len)
 	{
 		free(*buff);
 		*buff = NULL;
-		signal(SIGINT, sigintHandler);
+		signal(SIGINT, customSigintHandler);
 #if USE_GETLINE
 		r = getline(buff, &len_p, stdin);
 #else
@@ -30,12 +30,12 @@ ssize_t input_buff(info_t *info, char **buff, size_t *len)
 				(*buff)[r - 1] = '\0';
 				r--;
 			}
-			info->linecount_flag = 1;
-			remove_comments(*buff);
-			build_history_list(info, *buff, info->histcount++);
+			info->linecnt_flg = 1;
+			remove_customComments(*buff);
+			custom_build_history_list(info, *buff, info->histcount++);
 			{
 				*len = r;
-				info->cmd_buff = buff;
+				info->cmd_buf = buff;
 			}
 		}
 	}
@@ -55,7 +55,7 @@ ssize_t get_the_input(info_t *info)
 	ssize_t r = 0;
 	char **buff_p = &(info->arg), *p;
 
-	_putchar(BUFF_FLUSH);
+	_putchar(BUF_FLUSH);
 	r = input_buff(info, &buff, &len);
 	if (r == -1)
 		return (-1);
@@ -76,7 +76,7 @@ ssize_t get_the_input(info_t *info)
 		if (i >= len)
 		{
 			i = len = 0;
-			info->cmd_buff_type = CMD_NORM;
+			info->cmd_buf_type = CMD_NORM;
 		}
 
 		*buff_p = p;
@@ -101,7 +101,7 @@ ssize_t read_buff(info_t *info, char *buff, size_t *i)
 
 	if (*i)
 		return (0);
-	r = read(info->readfd, buff, READ_BUFF_SIZE);
+	r = read(info->readfd, buff, READ_BUF_SIZE);
 	if (r >= 0)
 		*i = r;
 	return (r);
@@ -129,20 +129,20 @@ int _getline(info_t *info, char **ptr, size_t *length)
 	if (i == len)
 		i = len = 0;
 
-	r = read_buf(info, buf, &len);
+	r = read_buff(info, buf, &len);
 	if (r == -1 || (r == 0 && len == 0))
 		return (-1);
 
-	c = _strchr(buf + i, '\n');
+	c = strchr(buf + i, '\n');
 	k = c ? 1 + (unsigned int)(c - buf) : len;
-	new_p = _realloc(p, s, s ? s + k : k + 1);
+	new_p = realloc(p, s, s ? s + k : k + 1);
 	if (!new_p)
 		return (p ? free(p), -1 : -1);
 
 	if (s)
-		_strncat(new_p, buf + i, k - i);
+		_strcat(new_p, buf + i, k - i);
 	else
-		_strncpy(new_p, buf + i, k - i + 1);
+		_strcpy(new_p, buf + i, k - i + 1);
 
 	s += k - i;
 	i = k;
@@ -164,6 +164,6 @@ void customSigintHandler(__attribute__((unused))int signal_num)
 {
 	_puts("\n");
 	_puts("$ CustomShell > ");
-	_putchar(BUFF_FLUSH);
+	_putchar(BUF_FLUSH);
 }
 

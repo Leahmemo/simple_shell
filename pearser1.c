@@ -66,7 +66,7 @@ char *find_command_in_path(info_t *info, char *path_string, char *command)
 	{
 		if (!path_string[i] || path_string[i] == ':')
 		{
-			path = extract_substring(path_string, current_position, i);
+			path = extract_substring(path_string, curentr_position, i);
 			if (!*path)
 				strcat(path, command);
 			else
@@ -78,7 +78,7 @@ char *find_command_in_path(info_t *info, char *path_string, char *command)
 				return (path);
 			if (!path_string[i])
 				break;
-			current_position = i;
+			curentr_position = i;
 		}
 		i++;
 	}

@@ -21,10 +21,10 @@ void custom_set_info(info_t *info, char **av)
 {
 	int i = 0;
 
-	info->fname = av[0];
+	info->filename = av[0];
 	if (info->custom_arg)
 	{
-		info->custom_argv = strtow(info->custom_arg, " \t");
+		info->custom_argv = strtok(info->custom_arg, " \t");
 		if (!info->custom_argv)
 		{
 			info->custom_argv = malloc(sizeof(char *) * 2);
@@ -50,7 +50,7 @@ void custom_set_info(info_t *info, char **av)
  */
 void custom_free_info(info_t *info, int all)
 {
-	ffree(info->custom_argv);
+	free(info->custom_argv);
 	info->custom_argv = NULL;
 	info->custom_path = NULL;
 	if (all)
@@ -63,9 +63,9 @@ void custom_free_info(info_t *info, int all)
 			free_list(&(info->custom_history));
 		if (info->custom_alias)
 			free_list(&(info->custom_alias));
-		ffree(info->custom_environ);
+		free(info->custom_environ);
 			info->custom_environ = NULL;
-		bfree((void **)info->cmd_buf);
+		free((void **)info->cmd_buf);
 		if (info->readfd > 2)
 			close(info->readfd);
 		_putchar(BUF_FLUSH);

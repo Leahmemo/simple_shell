@@ -19,7 +19,7 @@ list_t *custom_add_node(list_t **custom_head, const char *custom_str, int custom
 	if (!new_custom_head)
 		return (NULL);
 
-	_memset((void *)new_custom_head, 0, sizeof(list_t));
+	memset((void *)new_custom_head, 0, sizeof(list_t));
 	new_custom_head->num = custom_num;
 
 	if (custom_str)
@@ -32,7 +32,7 @@ list_t *custom_add_node(list_t **custom_head, const char *custom_str, int custom
 	}
 	}
 
-	new_custom_head->next = *custom_head;
+	new_custom_head->nxt = *custom_head;
 	*custom_head = new_custom_head;
 
 	return (new_custom_head);
@@ -59,7 +59,7 @@ list_t *custom_add_node_end(list_t **custom_head, const char *custom_str, int cu
 	if (!new_custom_node)
 		return (NULL);
 
-	_memset((void *)new_custom_node, 0, sizeof(list_t));
+	memset((void *)new_custom_node, 0, sizeof(list_t));
 	new_custom_node->num = custom_num;
 
 	if (custom_str)
@@ -75,9 +75,9 @@ list_t *custom_add_node_end(list_t **custom_head, const char *custom_str, int cu
 
 	if (custom_node)
 	{
-		while (custom_node->next)
-		custom_node = custom_node->next;
-		custom_node->next = new_custom_node;
+		while (custom_node->nxt)
+		custom_node = custom_node->nxt;
+		custom_node->nxt = new_custom_node;
 	}
 	else
 		*custom_head = new_custom_node;
@@ -97,9 +97,9 @@ size_t custom_print_list_str(const list_t *custom_h)
 
 	while (custom_h)
 	{
-		_custom_puts(custom_h->custom_str ? custom_h->custom_str : "(nil)");
-		_custom_puts("\n");
-		custom_h = custom_h->next;
+		_custom_alias(custom_h->custom_str ? custom_h->custom_str : "(nil)");
+		_custom_alias("\n");
+		custom_h = custom_h->nxt;
 	i++;
 	}
 
@@ -124,7 +124,7 @@ int custom_delete_node_at_index(list_t **custom_head, unsigned int custom_index)
 	if (!custom_index)
 	{
 		custom_node = *custom_head;
-		*custom_head = (*custom_head)->next;
+		*custom_head = (*custom_head)->nxt;
 		free(custom_node->custom_str);
 		free(custom_node);
 		return (1);
@@ -136,7 +136,7 @@ int custom_delete_node_at_index(list_t **custom_head, unsigned int custom_index)
 	{
 		if (i == custom_index)
 	{
-		prev_custom_node->next = custom_node->next;
+		prev_custom_node->nxt = custom_node->nxt;
 		free(custom_node->custom_str);
 		free(custom_node);
 		return (1);
@@ -144,7 +144,7 @@ int custom_delete_node_at_index(list_t **custom_head, unsigned int custom_index)
 
 		i++;
 		prev_custom_node = custom_node;
-		custom_node = custom_node->next;
+		custom_node = custom_node->nxt;
 	}
 
 	return (0);
@@ -168,7 +168,7 @@ void custom_free_list(list_t **custom_head_ptr)
 
 	while (custom_node)
 	{
-		next_custom_node = custom_node->next;
+		next_custom_node = custom_node->nxt;
 		free(custom_node->custom_str);
 		free(custom_node);
 		custom_node = next_custom_node;

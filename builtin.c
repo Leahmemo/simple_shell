@@ -18,14 +18,14 @@ int my_exit(info_t *info)
 	{
 		info->status = 2;
 		print_error(info, "Illegal number: ");
-		e_puts(info->argv[1]);
-		e_putchar('\n');
+		_puts(info->argv[1]);
+		_putchar('\n');
 		return (1);
 	}
-	info->err_num = str_to_int(info->argv[1]);
+	info->err_nm = str_to_int(info->argv[1]);
 	return (-2);
 	}
-		info->err_num = -1;
+		info->err_nm = -1;
 		return (-2);
 	}
 
@@ -45,7 +45,7 @@ int my_cd(info_t *info)
 		e_puts("TODO: >>getcwd failure emsg here<<\n");
 	if (!info->argv[1])
 	{
-	new_dir = _getenv(info, "HOME=");
+	new_dir = getenv(info, "HOME=");
 	if (!new_dir)
 		chdir((new_dir = _getenv(info, "PWD=")) ? new_dir : "/");
 	else
@@ -72,7 +72,7 @@ int my_cd(info_t *info)
 	}
 	else
 	{
-		_setenv(info, "OLDPWD", _getenv(info, "PWD="));
+		setenv(info, "OLDPWD", _getenv(info, "PWD="));
 		_setenv(info, "PWD", getcwd(buffer, 1024));
 	}
 	return (0);

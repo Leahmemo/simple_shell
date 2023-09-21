@@ -60,7 +60,7 @@ int print_customDecimal(int input, int fd)
 	unsigned int _absolute, current;
 
 	if (fd == STDERR_FILENO)
-		custompchar = _custompchar;
+		custompchar = custompchar;
 	if (input < 0)
 	{
 		_absolute = -input;
@@ -69,10 +69,10 @@ int print_customDecimal(int input, int fd)
 	}
 	else
 		_absolute = input;
-	current = absolute;
+	current = _absolute;
 	for (i = 1000000000; i > 1; i /= 10)
 	{
-		if (absolute / i)
+		if (_absolute / i)
 		{
 			custompchar('0' + current / i);
 			count++;
