@@ -138,9 +138,11 @@ void _puts(char *string_to_print);
 int _putchar(char character);
 
 /* builtin2.c */
-int _myhistory(info_t *);
-int _myalias(info_t *);
-
+int custom_history(info_t *);
+int remove_alias(info_t *);
+int set_custom_alias(info_t *info, char *str);
+int print_custom_alias(list_t *node);
+int _custom_alias(info_t *info);
 /* exiting.c */
 char *_custom_strncpy(char *, char *, int);
 char *_custom_strncat(char *, char *, int);
