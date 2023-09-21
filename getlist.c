@@ -1,3 +1,5 @@
+#include "shell.h"
+
 /**
  * custom_add_node - adds a custom node to the beginning of the list
  * @custom_head: address of pointer to custom head node

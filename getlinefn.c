@@ -1,68 +1,169 @@
+#include "shell.h"
+
 /**
- * check_interactivity - determines if the shell is in interactive mode
- * @info: pointer to info structure
+ * input_buff - buffers chained commands
+ * @info: parameter struct
+ * @buff: address of the buffer
+ * @len: address of length var
  *
- * Return: 1 if interactive mode, 0 otherwise
+ * Return: bytes read
  */
-int check_interactivity(info_t *info)
+ssize_t input_buff(info_t *info, char **buff, size_t *len)
 {
-	return (is_terminal(STDIN_FILENO) && info->read_fd <= 2);
+	ssize_t r = 0;
+	size_t len_p = 0;
+
+	if (!*len)
+	{
+		free(*buff);
+		*buff = NULL;
+		signal(SIGINT, sigintHandler);
+#if USE_GETLINE
+		r = getline(buff, &len_p, stdin);
+#else
+		r = _getline(info, buff, &len_p);
+#endif
+		if (r > 0)
+		{
+			if ((*buff)[r - 1] == '\n')
+			{
+				(*buff)[r - 1] = '\0';
+				r--;
+			}
+			info->linecount_flag = 1;
+			remove_comments(*buff);
+			build_history_list(info, *buff, info->histcount++);
+			{
+				*len = r;
+				info->cmd_buff = buff;
+			}
+		}
+	}
+	return (r);
 }
 
 /**
- * is_separator - checks if a character is a separator
- * @c: the character to check
- * @separators: a string of separators
- * Return: 1 if it's a separator, 0 otherwise
+ * get_the_input - gets a line minus the newline
+ * @info: parameter struct
+ *
+ * Return: bytes read
  */
-int is_separator(char c, char *separators)
+ssize_t get_the_input(info_t *info)
 {
-	while (*separators)
+	static char *buff;
+	static size_t i, j, len;
+	ssize_t r = 0;
+	char **buff_p = &(info->arg), *p;
+
+	_putchar(BUFF_FLUSH);
+	r = input_buff(info, &buff, &len);
+	if (r == -1)
+		return (-1);
+	if (len)
 	{
-		if (*separators++ == c)
-		return (1);
+		j = i;
+		p = buff + i;
+
+		check_chain(info, buff, &j, i, len);
+		while (j < len)
+		{
+			if (is_chain(info, buff, &j))
+				break;
+			j++;
+		}
+
+		i = j + 1;
+		if (i >= len)
+		{
+			i = len = 0;
+			info->cmd_buff_type = CMD_NORM;
+		}
+
+		*buff_p = p;
+		return (_strlen(p));
 	}
-	return (0);
+
+	*buff_p = buff;
+	return (r);
 }
 
 /**
- * is_alphabetic - checks if a character is alphabetic
- * @c: the character to check
- * Return: 1 if it's alphabetic, 0 otherwise
+ * read_buff - reads a buffer
+ * @info: parameter struct
+ * @buff: buffer
+ * @i: size
+ *
+ * Return: r
  */
-int is_alphabetic(int c)
+ssize_t read_buff(info_t *info, char *buff, size_t *i)
 {
-	if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'))
-		return (1);
-	return (0);
+	ssize_t r = 0;
+
+	if (*i)
+		return (0);
+	r = read(info->readfd, buff, READ_BUFF_SIZE);
+	if (r >= 0)
+		*i = r;
+	return (r);
 }
 
 /**
- * custom_atoi - converts a string to an integer
- * @s: the string to be converted
- * Return: 0 if no numbers in string, the converted number otherwise
+ * _getline - gets the next line of input from STDIN
+ * @info: parameter struct
+ * @ptr: address of pointer to buffer, preallocated or NULL
+ * @length: size of preallocated ptr buffer if not NULL
+ *
+ * Return: s
  */
-int custom_atoi(char *s)
+int _getline(info_t *info, char **ptr, size_t *length)
 {
-	int i, sign = 1, flag = 0, result;
-	unsigned int value = 0;
+	static char buf[READ_BUF_SIZE];
+	static size_t i, len;
+	size_t k;
+	ssize_t r = 0, s = 0;
+	char *p = NULL, *new_p = NULL, *c;
 
-	for (i = 0; s[i] != '\0' && flag != 2; i++)
-	{
-	if (s[i] == '-')
-		sign *= -1;
+	p = *ptr;
+	if (p && length)
+		s = *length;
+	if (i == len)
+		i = len = 0;
 
-	if (s[i] >= '0' && s[i] <= '9')
-	{
-		flag = 1;
-		value *= 10;
-		value += (s[i] - '0');
-	}
-	else if (flag == 1)
-		flag = 2;
-	}
+	r = read_buf(info, buf, &len);
+	if (r == -1 || (r == 0 && len == 0))
+		return (-1);
 
-	result = sign * value;
-	return (result);
+	c = _strchr(buf + i, '\n');
+	k = c ? 1 + (unsigned int)(c - buf) : len;
+	new_p = _realloc(p, s, s ? s + k : k + 1);
+	if (!new_p)
+		return (p ? free(p), -1 : -1);
+
+	if (s)
+		_strncat(new_p, buf + i, k - i);
+	else
+		_strncpy(new_p, buf + i, k - i + 1);
+
+	s += k - i;
+	i = k;
+	p = new_p;
+
+	if (length)
+		*length = s;
+	*ptr = p;
+	return (s);
+}
+
+/**
+ * customSigintHandler - HANDLES  the SIGNINT signal ctrl C
+ * @signal_num: the signal number
+ *
+ * Return: void
+ */
+void customSigintHandler(__attribute__((unused))int signal_num)
+{
+	_puts("\n");
+	_puts("$ CustomShell > ");
+	_putchar(BUFF_FLUSH);
 }
 

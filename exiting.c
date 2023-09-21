@@ -1,3 +1,4 @@
+#include "shell.h"
 /**
  **_custom_strncpy - custom string copy function
  *@dest: destination string to be copied to

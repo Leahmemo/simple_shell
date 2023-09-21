@@ -1,3 +1,5 @@
+#include "shell.h"
+
 /**
  * custom_get_history_file - gets the custom history file
  * @info: parameter structure
