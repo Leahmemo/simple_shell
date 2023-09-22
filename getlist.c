@@ -20,7 +20,7 @@ list_t *custom_add_node(list_t **custom_head, const char *custom_str, int custom
 		return (NULL);
 
 	memset((void *)new_custom_head, 0, sizeof(list_t));
-	new_custom_head->num = custom_num;
+	new_custom_head -> num = custom_num;
 
 	if (custom_str)
 	{

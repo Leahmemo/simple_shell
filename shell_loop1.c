@@ -100,7 +100,7 @@ k++;
 if (!k)
 return;
 
-char *path = my_getenv("PATH");
+char *path = my_getenv(info, "PATH");
 if (path)
 {
 info->path = path;
@@ -137,7 +137,7 @@ if (child_pid == -1)
 }
 if (child_pid == 0)
 {
-if (execve(info->path, info->argv, my_getenv(info)) == -1)
+if (execve(info->path, info->argv, my_getenv(info, "SOME_ENV_VARIABLE")) == -1)
 {
 free_info(info, 1);
 if (errno == EACCES)

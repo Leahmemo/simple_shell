@@ -89,7 +89,7 @@ int my_help(info_t *info)
 	char **arg_array;
 
 	arg_array = info->argv;
-	e_puts("help call works. Function not yet implemented \n");
+	_puts("help call works. Function not yet implemented \n");
 	if (0)
 		e_puts(*arg_array);
 	return (0);
